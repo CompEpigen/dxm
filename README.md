@@ -128,7 +128,7 @@ position1,position2 -  genomic coordinates. Please provide as integers.  Normall
 
 regionName - please make unique name for each region tested (e.g. gene name, CGI ID, enhancer ID, etc.)
 
-fractionalMethylation - values should be between 0 (fully unmethylated) and 1 (fully methylated)
+fractionalMethylation - values should be between 0 (fully unmethylated) and 1 (fully methylated), if the program you use for preprocessing outputs values between 0 and 100 please divide by 100 first.
 
 coverage - sequencing coverage for that position. Please provide as an integer.
 
