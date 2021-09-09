@@ -58,6 +58,7 @@ def load_sample(fileName):
     gene = []
     indices = []
     helpLine = defaultdict(int)
+    flag=0
     with open(fileName,'r') as INPUT:
         for line in INPUT:
             data = line.strip().split() #split on whitespace
@@ -69,15 +70,27 @@ def load_sample(fileName):
             geneName = data[3] # not used though
             localMeth = float(data[4])
             localCov = float(data[5])
-            positions.append(localPos)
-            #orig_positions.append(localPos)
-            orig_positions2.append(localPos2)
-            chromosomes.append(chrom)
-            methVals.append(localMeth)
-            coverages.append(localCov)
-            if geneName not in helpLine.keys():
-                gene.append(geneName)
-            helpLine[geneName]+=1
+            if localMeth > 1:
+                print("methylation value of %s is greater than 1 for %s:%s" % (localMeth, chrom, localPos))
+                print("please ensure all methylation fractions are in the range from 0 to 1")
+                exit()
+            if localCov > 1:
+                positions.append(localPos)
+                #orig_positions.append(localPos)
+                orig_positions2.append(localPos2)
+                chromosomes.append(chrom)
+                methVals.append(localMeth)
+                coverages.append(localCov)
+                if geneName not in helpLine.keys():
+                    gene.append(geneName)
+                helpLine[geneName]+=1
+            else:
+                if flag == 0:
+                    print("found at least 1 site with coverage of 1 or less: %s:%s had coverage %s" % (chrom, localPos, localCov))
+                    print("DXM skips all sites with coverage 1 or less.")
+                flag = flag + 1
+    if flag > 0:
+        print("Filtered %s total sites with invalid coverage (i.e. coverage of 1 or less). If this is unexpected, please check your input file." % (flag))
     startIndex = 0
     for i in range(0,len(gene)):
         geneKey = gene[i]
