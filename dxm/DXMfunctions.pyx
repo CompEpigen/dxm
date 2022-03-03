@@ -217,7 +217,7 @@ def generateMethDist(methDistFile):
     with open(methDistFile,'r') as INPUT:
         for line in INPUT:
             data = line.strip().split("\t")
-            meth = float(data[2])
+            meth = float(data[4])
             myMethVals.append(meth)
 
     bins = [0.01*i for i in range(0,101)]
@@ -246,6 +246,8 @@ def solveMostLikelyFrac(methCounts,numSubpop):
         localCombo = 0
         try:
             localCombo = genLinearCombo(randomFrac,binaryVals)
+            localCombo.insert(0,0.0)
+            localCombo.append(1.0)
         except IndexError:
             print(str(randomFrac))
             print(str(binaryVals))
